@@ -13,6 +13,11 @@ namespace MyWorkerPool.Core.Models
         /// </summary>
         public bool IsIdle { get; set; } = true;
 
+        /// <summary>
+        /// 执行action
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="obj"></param>
         public void Process(Action<object> action,object obj)
         {
             Task t = new Task(action, obj);
@@ -21,9 +26,13 @@ namespace MyWorkerPool.Core.Models
                 IsIdle = true;
             });
             t.Start();
-            //Task.Run(.ContinueWith(t => {
-            //    IsIdle = true;
-            //});
+
+            /*不带参数action
+            Task.Run(.ContinueWith(t =>
+            {
+                IsIdle = true;
+            });
+            //*/
         }
     }
 }

@@ -9,11 +9,25 @@ namespace MyWorkerPool.Core.Models
 {
     public class WorkerPool
     {
+        /// <summary>
+        /// 单例对象
+        /// </summary>
         static WorkerPool workPool = null;
+
+        /// <summary>
+        /// lock帮助对象
+        /// </summary>
         static object lockHelper = new object();
-        //ConcurrentQueue<Worker> workingWorkerQueue = new ConcurrentQueue<Worker>();
-        //ConcurrentQueue<Worker> idleWorkerQueue = new ConcurrentQueue<Worker>();
+
+        /// <summary>
+        /// 队列对象
+        /// </summary>
         ConcurrentQueue<Worker> workerQueue = new ConcurrentQueue<Worker>();
+
+        /// <summary>
+        /// 初始化若干个工作者实例，私有构造避免被意外实例化
+        /// </summary>
+        /// <param name="number"></param>
         WorkerPool(int number)
         {
             number = number > 100 ? 10 : number;
@@ -24,6 +38,11 @@ namespace MyWorkerPool.Core.Models
             }
         }
 
+        /// <summary>
+        /// 获取工作者实例
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
         public static WorkerPool GetInstance(int number = 10)
         {
             if (workPool == null)
@@ -39,6 +58,10 @@ namespace MyWorkerPool.Core.Models
             return workPool;
         }
 
+        /// <summary>
+        /// 工作者对象队列中获取一个闲置状态的工作者对象
+        /// </summary>
+        /// <returns></returns>
         public Worker GetWorker()
         {
             Worker worker = null;
